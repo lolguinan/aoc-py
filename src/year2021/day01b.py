@@ -30,40 +30,14 @@ def count_depth_increases(depths):
     return increases
 
 
-def tests():
-    case = '''
-199
-200
-208
-210
-200
-207
-240
-269
-260
-263
-'''
-    case = parse_input(case)
-    expected = 5
-    actual = count_depth_increases(sums_in_window(case))
-    print(f'Case: {case}')
-    print('Pass:', expected == actual)
-    if expected != actual:
-        print(f'Expected: {expected}, Actual: {actual}')
-
-
 def main():
-    print('Running tests...')
-    tests()
-    # return
-
-    print()
-
     with open('inputs/001.txt') as fp:
         content = fp.read()
 
     depths = parse_input(content)
-    print(count_depth_increases(sums_in_window(depths)))
+    windowed_depths = sums_in_window(depths)
+    increases = count_depth_increases(windowed_depths)
+    print(increases)
 
 
 if __name__ == '__main__':
