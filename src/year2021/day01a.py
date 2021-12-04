@@ -5,8 +5,8 @@ import os
 
 def parse_input(content):
     # Interestingly, off by one when not using ints...
-    return list(map(int,
-        filter(None, map(str.strip, content.split(os.linesep)))))
+    return list(map(int, filter(None, map(str.strip,
+        content.split(os.linesep)))))
 
 
 def count_depth_increases(depths):

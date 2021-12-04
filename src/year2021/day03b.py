@@ -22,7 +22,7 @@ class Commonality(enum.Enum):
     MOST = 1
 
 
-def bit_criteria(data: list[list[int]], commonality):
+def bit_criteria(data: list[list[int]], commonality) -> list[int]:
     index = 0
     while index < len(data[0]) and len(data) > 1:
         counts = collections.Counter([
@@ -47,16 +47,16 @@ def bit_criteria(data: list[list[int]], commonality):
     return data[0]
 
 
-def get_life_support(data: list[list[int]]):
+def get_life_support(data: list[list[int]]) -> int:
     oxygen_generator = bit_criteria(data, Commonality.MOST)
     oxygen_generator = bit_row_to_decimal(oxygen_generator)
     co2_scrubber = bit_criteria(data, Commonality.LEAST)
     co2_scrubber = bit_row_to_decimal(co2_scrubber)
 
-    return oxygen_generator, co2_scrubber, oxygen_generator * co2_scrubber
+    return oxygen_generator * co2_scrubber
 
 
-def solve(data: list[list[int]]):
+def solve(data: list[list[int]]) -> int:
     return get_life_support(data)
 
 
@@ -65,7 +65,7 @@ def main():
         content = fp.read()
 
     data = parse_input(content)
-    _, _, answer = solve(data)
+    answer = solve(data)
     print(answer)
 
 

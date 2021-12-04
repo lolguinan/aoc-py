@@ -14,15 +14,16 @@ def parse_input(content):
 def execute_plan(commands):
     x = y = aim = 0
     for command, value in commands:
-        if command == 'forward':
-            x += value
-            y += value * aim
-        elif command == 'down':
-            aim += value
-        elif command == 'up':
-            aim -= value
-        else:
-            raise Exception(f'Unknown command: {command}')
+        match command:
+            case 'forward':
+                x += value
+                y += value * aim
+            case 'down':
+                aim += value
+            case 'up':
+                aim -= value
+            case _:
+                raise Exception(f'Unknown command: {command}')
     return x, y
 
 

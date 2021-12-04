@@ -29,7 +29,7 @@ def solve(data: list[list[int]]):
 
     power_consumption = gamma_rate * epsilon_rate
 
-    return gamma_rate, epsilon_rate, power_consumption
+    return power_consumption
 
 
 def main():
@@ -37,7 +37,7 @@ def main():
         content = fp.read()
 
     data = parse_input(content)
-    _, _, power_consumption = solve(data)
+    power_consumption = solve(data)
     print(power_consumption)
 
 

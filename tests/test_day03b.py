@@ -19,6 +19,6 @@ def test_example():
 01010
 '''
     case = day.parse_input(case)
-    expected = (23, 10, 230)
+    expected = 230
     actual = day.solve(case)
     assert expected == actual
