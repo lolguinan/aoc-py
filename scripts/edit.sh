@@ -11,7 +11,9 @@ then
     exit 1
 fi
 
-src="src/year2021/day$1.py"
+year=$(date +%Y)
+
+src="src/year$year/day$1.py"
 tests="tests/test_day$1.py"
 
 vim -p "$src" "$tests"

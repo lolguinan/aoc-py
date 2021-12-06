@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import datetime
 import os
 import shutil
 
@@ -8,12 +9,12 @@ import shutil
 START_IN = os.path.dirname(os.path.realpath(__file__))
 
 
-def resolve_paths(day: int) -> dict:
+def resolve_paths(year: int, day: int) -> dict:
     def make_rel_path(filepath):
         return os.path.relpath(os.path.realpath(filepath))
 
     day = f'{day:02}'
-    src = os.path.join(START_IN, '..', 'src', 'year2021')
+    src = os.path.join(START_IN, '..', 'src', f'year{year}')
     tests = os.path.join(START_IN, '..', 'tests')
     return {
         'src': {
@@ -45,6 +46,11 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.description = 'Copy some day A files to day B files.'
 
+    p.add_argument('-y', '--year',
+        type=int,
+        default=datetime.datetime.now().year,
+        help='year number (example: 2015')
+
     p.add_argument('day',
         type=int,
         help='day number')
@@ -59,7 +65,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    paths = resolve_paths(args.day)
+    paths = resolve_paths(args.year, args.day)
     errors = check_paths(paths)
 
     if args.dry:

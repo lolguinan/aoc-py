@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import datetime
 import importlib
 import os
 import re
@@ -27,6 +28,11 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.description = 'Solution runner.'
 
+    p.add_argument('-y', '--year',
+        type=int,
+        default=datetime.datetime.now().year,
+        help='year number (example: 2015')
+
     p.add_argument('-d', '--day',
         type=int,
         help='day number (example: 1)')
@@ -45,19 +51,19 @@ def parse_args():
 def main():
     args = parse_args()
     if args.day and args.part:
-        module_name = f'year2021.day{args.day:02}{args.part}'
+        module_name = f'year{args.year}.day{args.day:02}{args.part}'
         run_module(module_name)
         return
 
     if args.all:
         name_pattern = r'^(day\d{2}[ab])[.]py$'
-        container = os.path.join('src', 'year2021')
+        container = os.path.join('src', f'year{args.year}')
         candidates = sorted(filter(None, [
             first_or_default(re.findall(name_pattern, candidate))
             for candidate in os.listdir(container)
         ]))
         for candidate in candidates:
-            module_name = f'year2021.{candidate}'
+            module_name = f'year{args.year}.{candidate}'
             run_module(module_name)
             print()
 
