@@ -3,13 +3,13 @@
 import os
 
 
-def parse_input(content):
+def parse_input(content: str) -> list[int]:
     # Interestingly, off by one when not using ints...
     return list(map(int, filter(None, map(str.strip,
         content.split(os.linesep)))))
 
 
-def count_depth_increases(depths):
+def count_depth_increases(depths: list[int]) -> int:
     increases = 0
     for index in range(0, len(depths) - 1):
         a = depths[index]

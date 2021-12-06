@@ -4,7 +4,7 @@ import collections
 import os
 
 
-def parse_input(content) -> list[list[int]]:
+def parse_input(content: str) -> list[list[int]]:
     return [
         list(map(int, list(row)))
         for row in filter(None, map(str.strip,
@@ -12,7 +12,7 @@ def parse_input(content) -> list[list[int]]:
     ]
 
 
-def solve(data: list[list[int]]):
+def solve(data: list[list[int]]) -> int:
     gamma_rate = []
     epsilon_rate = []
 

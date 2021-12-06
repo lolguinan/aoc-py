@@ -5,7 +5,7 @@ import enum
 import os
 
 
-def parse_input(content) -> list[list[int]]:
+def parse_input(content: str) -> list[list[int]]:
     return [
         list(map(int, list(row)))
         for row in filter(None, map(str.strip,
@@ -22,7 +22,7 @@ class Commonality(enum.Enum):
     MOST = 1
 
 
-def bit_criteria(data: list[list[int]], commonality) -> list[int]:
+def bit_criteria(data: list[list[int]], commonality: Commonality) -> list[int]:
     index = 0
     while index < len(data[0]) and len(data) > 1:
         counts = collections.Counter([

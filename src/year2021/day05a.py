@@ -33,7 +33,9 @@ def render_grid(grid: dict) -> str:
     ])
 
 
-def apply_points(line_segments: list[list[int]]):
+def apply_points(
+        line_segments: list[list[int]]
+        ) -> dict[tuple[int, int], list[list[int]]]:
     grid = {}
     for line_segment in line_segments:
         x1, y1, x2, y2 = line_segment

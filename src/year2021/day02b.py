@@ -3,15 +3,15 @@
 import os
 
 
-def parse_input(content):
+def parse_input(content: str) -> list[tuple[str, int]]:
     return [
-        [a, int(b)] for a, b in
+        (a, int(b), ) for a, b in
         map(str.split, filter(None, map(str.strip,
             content.split(os.linesep))))
     ]
 
 
-def execute_plan(commands):
+def execute_plan(commands: list[tuple[str, int]]) -> tuple[int, int]:
     x = y = aim = 0
     for command, value in commands:
         match command:
