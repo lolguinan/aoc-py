@@ -8,13 +8,12 @@ import os
 def parse_input(content: str) -> list[list[int]]:
     return [
         list(map(int, list(row)))
-        for row in filter(None, map(str.strip,
-            content.split(os.linesep)))
+        for row in filter(None, map(str.strip, content.split(os.linesep)))
     ]
 
 
 def bit_row_to_decimal(row: list[int]) -> int:
-    return int(''.join(map(str, row)), 2)
+    return int("".join(map(str, row)), 2)
 
 
 class Commonality(enum.Enum):
@@ -25,9 +24,7 @@ class Commonality(enum.Enum):
 def bit_criteria(data: list[list[int]], commonality: Commonality) -> list[int]:
     index = 0
     while index < len(data[0]) and len(data) > 1:
-        counts = collections.Counter([
-            row[index] for row in data
-        ])
+        counts = collections.Counter([row[index] for row in data])
         (most_bit, most_count), (least_bit, least_count) = counts.most_common()
         if most_count == least_count:
             discriminator = commonality.value
@@ -38,11 +35,8 @@ def bit_criteria(data: list[list[int]], commonality: Commonality) -> list[int]:
                 case Commonality.MOST:
                     discriminator = most_bit
                 case _:
-                    raise Exception(f'Unknown commonality: {commonality}')
-        data = [
-            row for row in data
-            if row[index] == discriminator
-        ]
+                    raise Exception(f"Unknown commonality: {commonality}")
+        data = [row for row in data if row[index] == discriminator]
         index += 1
     return data[0]
 
@@ -61,7 +55,7 @@ def solve(data: list[list[int]]) -> int:
 
 
 def main():
-    with open('inputs/003.txt') as fp:
+    with open("inputs/003.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
@@ -69,5 +63,5 @@ def main():
     print(answer)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

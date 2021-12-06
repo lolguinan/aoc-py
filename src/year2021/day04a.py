@@ -11,8 +11,8 @@ def parse_input(content: str) -> tuple[list[int], list[list[list[int]]]]:
         if not line:
             boards.append([])
             continue
-        if ',' in line:
-            numbers = list(map(int, map(str.strip, line.split(','))))
+        if "," in line:
+            numbers = list(map(int, map(str.strip, line.split(","))))
             continue
         boards[-1].append(list(map(int, map(str.strip, line.split()))))
 
@@ -22,24 +22,25 @@ def parse_input(content: str) -> tuple[list[int], list[list[list[int]]]]:
 
 
 def render_board(board: list[list[int]], called_numbers: list[int]) -> str:
-    padding = max([
-        max(map(len, map(str, row)))
-        for row in board
-    ])
+    padding = max([max(map(len, map(str, row))) for row in board])
     render = []
     for row in board:
-        render.append(' '.join([
-            f'[{col:{padding}}]' if col in called_numbers
-            else f' {col:{padding}} '
-            for col in row
-        ]))
+        render.append(
+            " ".join(
+                [
+                    f"[{col:{padding}}]"
+                    if col in called_numbers
+                    else f" {col:{padding}} "
+                    for col in row
+                ]
+            )
+        )
     return os.linesep.join(render)
 
 
 def check_winners(
-        boards: list[list[list[int]]],
-        called_numbers: list[int]
-        ) -> int | None:
+    boards: list[list[list[int]]], called_numbers: list[int]
+) -> int | None:
     for board_index, board in enumerate(boards):
         for row_index, row in enumerate(board):
             if not set(row).difference(called_numbers):
@@ -67,7 +68,7 @@ def solve(boards: list[list[int]], numbers_to_call: list[int]) -> int:
 
 
 def main():
-    with open('inputs/004.txt') as fp:
+    with open("inputs/004.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
@@ -75,5 +76,5 @@ def main():
     print(answer)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -4,7 +4,7 @@ import year2021.day04a as day
 
 
 def test_example():
-    case = '''
+    case = """
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -24,7 +24,7 @@ def test_example():
 18  8 23 26 20
 22 11 13  6  5
  2  0 12  3  7
-'''
+"""
     numbers, boards = day.parse_input(case)
     case = day.parse_input(case)
     expected = 4512

@@ -5,8 +5,7 @@ import os
 
 def parse_input(content: str) -> list[int]:
     # Interestingly, off by one when not using ints...
-    return list(map(int, filter(None, map(str.strip,
-        content.split(os.linesep)))))
+    return list(map(int, filter(None, map(str.strip, content.split(os.linesep)))))
 
 
 def count_depth_increases(depths: list[int]) -> int:
@@ -20,7 +19,7 @@ def count_depth_increases(depths: list[int]) -> int:
 
 
 def main():
-    with open('inputs/001.txt') as fp:
+    with open("inputs/001.txt") as fp:
         content = fp.read()
 
     depths = parse_input(content)
@@ -28,5 +27,5 @@ def main():
     print(increases)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

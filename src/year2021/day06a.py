@@ -8,8 +8,7 @@ def parse_input(content: str) -> list[int]:
     for row in content.split(os.linesep):
         if not row.strip():
             continue
-        return list(map(int, filter(None, map(str.strip,
-            row.split(',')))))
+        return list(map(int, filter(None, map(str.strip, row.split(",")))))
 
 
 def step_day(state: list[int]) -> None:
@@ -34,7 +33,7 @@ def solve(initial_state: list[int], days: int) -> int:
 
 
 def main():
-    with open('inputs/006.txt') as fp:
+    with open("inputs/006.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
@@ -42,5 +41,5 @@ def main():
     print(answer)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

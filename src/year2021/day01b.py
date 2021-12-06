@@ -4,19 +4,12 @@ import os
 
 
 def parse_input(content: str) -> list[int]:
-    return list(map(int, filter(None, map(str.strip,
-        content.split(os.linesep)))))
+    return list(map(int, filter(None, map(str.strip, content.split(os.linesep)))))
 
 
 def sums_in_window(depths: list[int], window_length=3):
-    windows = [
-        depths[index: index + window_length]
-        for index in range(len(depths))
-    ]
-    windows = [
-        window for window in windows
-        if len(window) == window_length
-    ]
+    windows = [depths[index : index + window_length] for index in range(len(depths))]
+    windows = [window for window in windows if len(window) == window_length]
     return list(map(sum, windows))
 
 
@@ -31,7 +24,7 @@ def count_depth_increases(depths: list[int]) -> int:
 
 
 def main():
-    with open('inputs/001.txt') as fp:
+    with open("inputs/001.txt") as fp:
         content = fp.read()
 
     depths = parse_input(content)
@@ -40,5 +33,5 @@ def main():
     print(increases)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

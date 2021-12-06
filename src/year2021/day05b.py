@@ -7,9 +7,8 @@ import os
 def parse_input(content: str) -> list[list[int]]:
     return [
         # x1, y1, x2, y2
-        list(map(int, re.findall(r'(\d+)', line)))
-        for line in
-        filter(None, map(str.strip, content.split(os.linesep)))
+        list(map(int, re.findall(r"(\d+)", line)))
+        for line in filter(None, map(str.strip, content.split(os.linesep)))
     ]
 
 
@@ -26,16 +25,14 @@ def render_grid(grid: dict) -> str:
             if (x, y) in grid:
                 table[-1].append(str(len(grid[(x, y)])))
             else:
-                table[-1].append('.')
+                table[-1].append(".")
 
-    return os.linesep.join([
-        ''.join(row) for row in table
-    ])
+    return os.linesep.join(["".join(row) for row in table])
 
 
 def apply_points(
-        line_segments: list[list[int]]
-        ) -> dict[tuple[int, int], list[list[int]]]:
+    line_segments: list[list[int]],
+) -> dict[tuple[int, int], list[list[int]]]:
     grid = {}
     for line_segment in line_segments:
         x1, y1, x2, y2 = line_segment
@@ -68,14 +65,11 @@ def apply_points(
 
 def solve(line_segments: list[list[int]]) -> int:
     grid = apply_points(line_segments)
-    return sum([
-        1 if len(values) >= 2 else 0
-        for values in grid.values()
-    ])
+    return sum([1 if len(values) >= 2 else 0 for values in grid.values()])
 
 
 def main():
-    with open('inputs/005.txt') as fp:
+    with open("inputs/005.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
@@ -83,5 +77,5 @@ def main():
     print(answer)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
