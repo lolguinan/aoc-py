@@ -13,17 +13,17 @@ def resolve_paths(year: int, day: int) -> dict:
     def make_rel_path(filepath):
         return os.path.relpath(os.path.realpath(filepath))
 
-    day = f'{day:02}'
-    src = os.path.join(START_IN, '..', 'src', f'year{year}')
-    tests = os.path.join(START_IN, '..', 'tests')
+    day = f"{day:02}"
+    src = os.path.join(START_IN, "..", "src", f"year{year}")
+    tests = os.path.join(START_IN, "..", "tests")
     return {
-        'src': {
-            'a': make_rel_path(os.path.join(src, f'day{day}a.py')),
-            'b': make_rel_path(os.path.join(src, f'day{day}b.py')),
+        "src": {
+            "a": make_rel_path(os.path.join(src, f"day{day}a.py")),
+            "b": make_rel_path(os.path.join(src, f"day{day}b.py")),
         },
-        'tests': {
-            'a': make_rel_path(os.path.join(tests, f'test_day{day}a.py')),
-            'b': make_rel_path(os.path.join(tests, f'test_day{day}b.py')),
+        "tests": {
+            "a": make_rel_path(os.path.join(tests, f"test_day{day}a.py")),
+            "b": make_rel_path(os.path.join(tests, f"test_day{day}b.py")),
         },
     }
 
@@ -33,31 +33,30 @@ def check_paths(paths: dict):
     for kind in paths:
         for part in paths[kind]:
             filepath = paths[kind][part]
-            if kind == 'a':
+            if kind == "a":
                 if not os.path.exists(filepath):
-                    errors.append(f'Source does not exist: {filepath}')
-            elif kind == 'b':
+                    errors.append(f"Source does not exist: {filepath}")
+            elif kind == "b":
                 if os.path.exists(filepath):
-                    errors.append(f'Destination already exists: {filepath}')
+                    errors.append(f"Destination already exists: {filepath}")
     return errors
 
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.description = 'Copy some day A files to day B files.'
+    p.description = "Copy some day A files to day B files."
 
-    p.add_argument('-y', '--year',
+    p.add_argument(
+        "-y",
+        "--year",
         type=int,
         default=datetime.datetime.now().year,
-        help='year number (example: 2015')
+        help="year number (example: 2015",
+    )
 
-    p.add_argument('day',
-        type=int,
-        help='day number')
+    p.add_argument("day", type=int, help="day number")
 
-    p.add_argument('-d', '--dry',
-        action='store_true',
-        help='show what would happen')
+    p.add_argument("-d", "--dry", action="store_true", help="show what would happen")
 
     return p.parse_args()
 
@@ -70,21 +69,20 @@ def main():
 
     if args.dry:
         if errors:
-            print('Errors:')
+            print("Errors:")
             print(os.linesep.join(errors))
         for kind in paths:
-            print('Copy:')
-            print('SRC:', paths[kind]['a'])
-            print('DST:', paths[kind]['b'])
+            print("Copy:")
+            print("SRC:", paths[kind]["a"])
+            print("DST:", paths[kind]["b"])
         return
 
     if errors:
         raise Exception(os.linesep.join(errors))
 
     for kind in paths:
-        shutil.copy2(paths[kind]['a'], paths[kind]['b'])
+        shutil.copy2(paths[kind]["a"], paths[kind]["b"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-

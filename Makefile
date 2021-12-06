@@ -9,6 +9,5 @@ test:
 
 .PHONY: format
 format:
-	black --target-version py310 src/
-	black --target-version py310 tests/
+	black --target-version py310 .
 

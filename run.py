@@ -16,34 +16,31 @@ def first_or_default(seq, default=None):
 
 
 def run_module(module_name):
-    print('Module:', module_name)
+    print("Module:", module_name)
     start = time.time()
     mod = importlib.import_module(module_name)
     mod.main()
     stop = time.time()
-    print(f'Runtime: {stop - start:.19f}')
+    print(f"Runtime: {stop - start:.19f}")
 
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.description = 'Solution runner.'
+    p.description = "Solution runner."
 
-    p.add_argument('-y', '--year',
+    p.add_argument(
+        "-y",
+        "--year",
         type=int,
         default=datetime.datetime.now().year,
-        help='year number (example: 2015')
+        help="year number (example: 2015",
+    )
 
-    p.add_argument('-d', '--day',
-        type=int,
-        help='day number (example: 1)')
+    p.add_argument("-d", "--day", type=int, help="day number (example: 1)")
 
-    p.add_argument('-p', '--part',
-        choices=['a', 'b'],
-        help='part letter (example: a)')
+    p.add_argument("-p", "--part", choices=["a", "b"], help="part letter (example: a)")
 
-    p.add_argument('-a', '--all',
-        action='store_true',
-        help='run everything')
+    p.add_argument("-a", "--all", action="store_true", help="run everything")
 
     return p.parse_args()
 
@@ -51,22 +48,27 @@ def parse_args():
 def main():
     args = parse_args()
     if args.day and args.part:
-        module_name = f'year{args.year}.day{args.day:02}{args.part}'
+        module_name = f"year{args.year}.day{args.day:02}{args.part}"
         run_module(module_name)
         return
 
     if args.all:
-        name_pattern = r'^(day\d{2}[ab])[.]py$'
-        container = os.path.join('src', f'year{args.year}')
-        candidates = sorted(filter(None, [
-            first_or_default(re.findall(name_pattern, candidate))
-            for candidate in os.listdir(container)
-        ]))
+        name_pattern = r"^(day\d{2}[ab])[.]py$"
+        container = os.path.join("src", f"year{args.year}")
+        candidates = sorted(
+            filter(
+                None,
+                [
+                    first_or_default(re.findall(name_pattern, candidate))
+                    for candidate in os.listdir(container)
+                ],
+            )
+        )
         for candidate in candidates:
-            module_name = f'year{args.year}.{candidate}'
+            module_name = f"year{args.year}.{candidate}"
             run_module(module_name)
             print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
