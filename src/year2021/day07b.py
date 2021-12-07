@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import functools
 import collections
+import functools
 import os
 
 
@@ -17,7 +17,7 @@ def get_step_count(start: int, stop: int) -> int:
 
 
 @functools.cache
-def get_move_cost(steps) -> int:
+def get_move_cost(steps: int) -> int:
     return sum(range(steps + 1))
 
 
