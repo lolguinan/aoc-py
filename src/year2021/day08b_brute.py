@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import functools
 import itertools
 import os
 
@@ -41,41 +40,37 @@ def segment_to_digit(segment: str) -> int:
     raise Exception(f"Unknown segment: {segment}")
 
 
+def get_segment_activations(patterns: list[str]) -> set[tuple[int]]:
+    return set(
+        [tuple([int(letter in pattern) for letter in CORPUS]) for pattern in patterns]
+    )
+
+
+def render_activation_matrix(patterns: list[str]) -> str:
+    return os.linesep.join(
+        [
+            ",".join([str(col) if col else " " for col in row])
+            for row in get_segment_activations(patterns)
+        ]
+    )
+
+
 def apply_translation(patterns: list[str], translations: dict[str, str]) -> list[str]:
     return ["".join(translations[ch] for ch in pattern) for pattern in patterns]
 
 
-@functools.cache
-def get_all_translations() -> list[dict[str, str]]:
-    translations = []
-    for source in itertools.permutations(CORPUS):
-        translations.append(dict(zip(source, CORPUS)))
-    return translations
-
-
-@functools.cache
-def get_all_wire_permutations() -> list[set[str]]:
-    groups = []
-    for translations in get_all_translations():
-        inverted = dict((v, k) for k, v in translations.items())
-        groups.append(
-            set(
-                "".join(sorted(pattern))
-                for pattern in apply_translation(SEGMENTS.values(), inverted)
-            )
-        )
-    return groups
-
-
 def deduce_rewire(patterns: list[str]) -> dict[str, str]:
-    patterns = set("".join(sorted(pattern)) for pattern in patterns)
+    required_activations = get_segment_activations(SEGMENTS.values())
 
-    precompute = list(zip(get_all_translations(), get_all_wire_permutations()))
-    for translations, wire_group in precompute:
-        if wire_group == patterns:
+    for source in itertools.permutations(CORPUS):
+        translations = dict(zip(source, CORPUS))
+
+        candidate_activations = get_segment_activations(
+            apply_translation(patterns, translations)
+        )
+
+        if required_activations == candidate_activations:
             return translations
-
-    raise Exception("Invalid state.")
 
 
 def solve(data: list[tuple[list[str], list[str]]]) -> int:
