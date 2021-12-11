@@ -18,12 +18,14 @@ def count_depth_increases(depths: list[int]) -> int:
     return increases
 
 
-def main():
+def main(runner=False):
     with open("inputs/001.txt") as fp:
         content = fp.read()
 
     depths = parse_input(content)
     increases = count_depth_increases(depths)
+    if runner:
+        return increases
     print(increases)
 
 

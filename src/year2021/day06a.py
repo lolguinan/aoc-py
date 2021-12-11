@@ -32,12 +32,14 @@ def solve(initial_state: list[int], days: int) -> int:
     return len(current_state)
 
 
-def main():
+def main(runner=False):
     with open("inputs/006.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data, 80)
+    if runner:
+        return answer
     print(answer)
 
 

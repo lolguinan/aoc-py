@@ -29,12 +29,14 @@ def solve(data: list[list[int]]) -> int:
     return power_consumption
 
 
-def main():
+def main(runner=False):
     with open("inputs/003.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     power_consumption = solve(data)
+    if runner:
+        return power_consumption
     print(power_consumption)
 
 

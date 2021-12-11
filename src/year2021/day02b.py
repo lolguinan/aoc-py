@@ -31,12 +31,14 @@ def execute_plan(commands: list[tuple[str, int]]) -> tuple[int, int]:
     return x, y
 
 
-def main():
+def main(runner=False):
     with open("inputs/002.txt") as fp:
         content = fp.read()
 
     commands = parse_input(content)
     x, y = execute_plan(commands)
+    if runner:
+        return x * y
     print(f"({x}, {y}) and {x} * {y} = {x * y}")
 
 

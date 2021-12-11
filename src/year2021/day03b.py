@@ -54,12 +54,14 @@ def solve(data: list[list[int]]) -> int:
     return get_life_support(data)
 
 
-def main():
+def main(runner=False):
     with open("inputs/003.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data)
+    if runner:
+        return answer
     print(answer)
 
 

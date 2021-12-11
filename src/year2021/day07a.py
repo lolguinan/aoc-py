@@ -27,12 +27,14 @@ def solve(positions: list[int]) -> tuple[int, int]:
         return v
 
 
-def main():
+def main(runner=False):
     with open("inputs/007.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data)
+    if runner:
+        return answer
     print(answer)
 
 

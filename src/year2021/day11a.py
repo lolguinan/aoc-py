@@ -93,12 +93,14 @@ def solve(data: list[list[int]], steps: int) -> int:
     return flashes
 
 
-def main():
+def main(runner=False):
     with open("inputs/011.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data, 100)
+    if runner:
+        return answer
     print(answer)
 
 

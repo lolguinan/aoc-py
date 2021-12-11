@@ -51,7 +51,7 @@ def parse_args():
         "--year",
         type=int,
         default=datetime.datetime.now().year,
-        help="year number (example: 2015",
+        help="year number (example: 2015)",
     )
 
     p.add_argument("day", type=int, help="day number")

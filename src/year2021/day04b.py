@@ -76,12 +76,14 @@ def solve(boards: list[list[int]], numbers_to_call: list[int]) -> int:
     return get_score(last_winner, numbers_to_call[: last_call_index + 1])
 
 
-def main():
+def main(runner=False):
     with open("inputs/004.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(*data)
+    if runner:
+        return answer
     print(answer)
 
 

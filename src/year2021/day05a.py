@@ -53,12 +53,14 @@ def solve(line_segments: list[list[int]]) -> int:
     return sum([1 if len(values) >= 2 else 0 for values in grid.values()])
 
 
-def main():
+def main(runner=False):
     with open("inputs/005.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data)
+    if runner:
+        return answer
     print(answer)
 
 

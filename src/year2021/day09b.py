@@ -71,12 +71,14 @@ def solve(data: dict[tuple[int, int], int]) -> int:
     return functools.reduce(operator.mul, sorted(basins.values())[-3:])
 
 
-def main():
+def main(runner=False):
     with open("inputs/009.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)
     answer = solve(data)
+    if runner:
+        return answer
     print(answer)
 
 
