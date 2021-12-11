@@ -21,6 +21,7 @@ pyenv activate aoc-py
 Once you've got a virtualenv by your preferred method:
 
 ```
+pip install -r requirements.txt
 pip install -r requirements-dev.txt
 pip install -e .
 ```
