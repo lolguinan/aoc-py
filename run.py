@@ -1,23 +1,46 @@
 #!/usr/bin/env python3
 
 import argparse
+import collections
 import datetime
 import importlib
 import os
 import re
 import sys
 import time
+import tracemalloc
 
 import tabulate
 
 
-def run_module(module_name: str, rounds=1) -> tuple[int | float | str, float]:
+RunResult = collections.namedtuple(
+    "RunResult",
+    [
+        "response",
+        "duration",
+        "memory",
+    ],
+)
+
+
+def run_module(module_name: str, rounds=1, memory=False) -> RunResult:
+    if memory:
+        tracemalloc.start()
+
     start = time.time()
     for _ in range(rounds):
         mod = importlib.import_module(module_name)
         response = mod.main(runner=True)
     stop = time.time()
-    return response, stop - start
+
+    if memory:
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        tracemalloc.reset_peak()
+    else:
+        peak = None
+
+    return RunResult(response, stop - start, peak)
 
 
 def parse_args():
@@ -44,6 +67,12 @@ def parse_args():
         type=int,
         default=1,
         help="number of times to run each solution",
+    )
+
+    p.add_argument(
+        "--memory",
+        action="store_true",
+        help="track memory allocations (slower!)",
     )
 
     args = p.parse_args()
@@ -77,22 +106,30 @@ def main():
         ]
         target_modules.update(dict(sorted(candidates)))
 
+    headers = ["MODULE", "RESPONSE", "DURATION"]
+    if args.memory:
+        headers.append("MEM (MiB)")
+
     results = []
     print("Working", end="", flush=True)
     for index, year_day_part in enumerate(target_modules):
         target_module = target_modules[year_day_part]
-        response, duration = run_module(target_module, args.rounds)
-        results.append([target_module, response, duration / args.rounds])
+        result = run_module(target_module, args.rounds, args.memory)
+        results.append(
+            [
+                target_module,
+                result.response,
+                result.duration / args.rounds,
+            ]
+        )
+        if args.memory:
+            results[-1].append(result.memory / 1024 / 1024)
         print(".", end="", flush=True)
 
     print()
     print()
 
-    print(
-        tabulate.tabulate(
-            results, headers=["MODULE", "RESPONSE", "DURATION"], floatfmt=".4f"
-        )
-    )
+    print(tabulate.tabulate(results, headers=headers, floatfmt=".4f"))
 
 
 if __name__ == "__main__":
