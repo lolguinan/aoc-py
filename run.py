@@ -11,14 +11,7 @@ import time
 import tabulate
 
 
-def first_or_default(seq, default=None):
-    try:
-        return next(iter(seq))
-    except StopIteration:
-        return default
-
-
-def run_module(module_name, rounds=1):
+def run_module(module_name: str, rounds=1) -> tuple[int | float | str, float]:
     start = time.time()
     for _ in range(rounds):
         mod = importlib.import_module(module_name)
@@ -64,34 +57,34 @@ def parse_args():
 def main():
     args = parse_args()
 
-    target_modules = []
+    target_modules = {}
 
     if args.day and args.part:
+        year_day_part = (args.year, args.day, args.part)
         module_name = f"year{args.year}.day{args.day:02}{args.part}"
-        target_modules.append(module_name)
+        target_modules[year_day_part] = module_name
 
     elif args.all:
-        name_pattern = r"^(day\d{2}[ab])[.]py$"
+        name_pattern = r"^day(\d{2})([ab])[.]py$"
         container = os.path.join("src", f"year{args.year}")
-        target_modules.extend(
-            sorted(
-                f"year{args.year}.{candidate}"
-                for candidate in filter(
-                    None,
-                    [
-                        first_or_default(re.findall(name_pattern, candidate))
-                        for candidate in os.listdir(container)
-                    ],
-                )
-            )
-        )
+        candidates = [
+            re.findall(name_pattern, candidate) for candidate in os.listdir(container)
+        ]
+        candidates = [c[0] for c in candidates if len(c) >= 1]
+        candidates = [
+            [(args.year, int(day), part), f"year{args.year}.day{day}{part}"]
+            for day, part in candidates
+        ]
+        target_modules.update(dict(sorted(candidates)))
 
     results = []
     print("Working", end="", flush=True)
-    for target_module in target_modules:
+    for index, year_day_part in enumerate(target_modules):
+        target_module = target_modules[year_day_part]
         response, duration = run_module(target_module, args.rounds)
         results.append([target_module, response, duration / args.rounds])
         print(".", end="", flush=True)
+
     print()
     print()
 
