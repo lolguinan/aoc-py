@@ -16,7 +16,6 @@ A-end
 b-end
 """
     data = day.parse_input(case)
-
     expected = set(
         [
             ("start", "A", "b", "A", "b", "A", "c", "A", "end"),

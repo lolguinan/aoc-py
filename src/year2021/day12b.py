@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import collections
+import functools
 import os
 import string
 import typing as T
@@ -28,10 +29,12 @@ def parse_input(content: str) -> dict[str, list[str]]:
     return result
 
 
+@functools.cache
 def is_big(s: str) -> bool:
     return all(ch in string.ascii_uppercase for ch in s)
 
 
+@functools.cache
 def is_small(s: str) -> bool:
     return all(ch in string.ascii_lowercase for ch in s)
 
@@ -45,20 +48,21 @@ def dfs(
 
     if visited is None:
         visited = collections.Counter()
-
     if ancestors is None:
         ancestors = []
 
     if node == "end":
         yield ancestors + [node]
 
-    visited.update([node])
+    if node not in visited or is_small(node):
+        visited.update([node])
+
+    has_small_twice = visited.total() > len(visited)
 
     for child in graph.get(node, []):
-        has_small_twice = any(c > 1 for n, c in visited.items() if is_small(n))
-        can_pursue = is_big(child) or child not in visited or not has_small_twice
-
-        if can_pursue:
+        if child == "end":
+            yield ancestors + [node, child]
+        elif is_big(child) or child not in visited or not has_small_twice:
             yield from dfs(
                 graph, child, collections.Counter(visited), ancestors + [node]
             )
