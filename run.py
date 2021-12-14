@@ -11,6 +11,7 @@ import time
 import tracemalloc
 
 import tabulate
+import tqdm
 
 
 RunResult = collections.namedtuple(
@@ -111,9 +112,11 @@ def main():
         headers.append("MEM (MiB)")
 
     results = []
-    print("Working", end="", flush=True)
-    for index, year_day_part in enumerate(target_modules):
+
+    pbar = tqdm.tqdm(target_modules)
+    for year_day_part in pbar:
         target_module = target_modules[year_day_part]
+        pbar.set_description(target_module)
         result = run_module(target_module, args.rounds, args.memory)
         results.append(
             [
@@ -124,9 +127,7 @@ def main():
         )
         if args.memory:
             results[-1].append(result.memory / 1024 / 1024)
-        print(".", end="", flush=True)
 
-    print()
     print()
 
     print(tabulate.tabulate(results, headers=headers, floatfmt=".4f"))
