@@ -72,10 +72,7 @@ _RAW_LETTERS_EMBED = """
 #..# ###. .##. #### #... .### #..# .##. #..# #### #... #..# .##. ####
 """.strip()
 
-LETTERS = dict(
-    (letter, found)
-    for letter, found in zip(_RAW_LETTERS, _find_letters(_RAW_LETTERS_EMBED))
-)
+LETTERS = dict(zip(_RAW_LETTERS, _find_letters(_RAW_LETTERS_EMBED)))
 
 
 def _translate_letter(found: list[list[str]], pixel: str = "#") -> str:

@@ -20,7 +20,7 @@ def parse_input(content: str) -> ParsedInput:
     )
 
     template = template[0]
-    rules = dict(((pair[0], pair[1]), elem) for pair, elem in rules)
+    rules = {tuple(pair): elem for pair, elem in rules}
 
     return template, rules
 

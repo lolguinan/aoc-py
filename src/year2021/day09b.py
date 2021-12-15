@@ -67,7 +67,7 @@ def solve(data: dict[tuple[int, int], int]) -> int:
         if is_low_point(data, x, y):
             poi[(x, y)] = data[(x, y)]
 
-    basins = dict(((x, y), len(flood_basin(data, BOUNDARY, x, y))) for x, y in poi)
+    basins = {(x, y): len(flood_basin(data, BOUNDARY, x, y)) for x, y in poi}
     return functools.reduce(operator.mul, sorted(basins.values())[-3:])
 
 
