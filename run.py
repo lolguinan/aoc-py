@@ -82,10 +82,12 @@ def parse_args():
     p.add_argument(
         "--memory",
         action="store_true",
-        help="track memory allocations (slower!)",
+        help="track memory allocations (slower)",
     )
 
-    p.add_argument("--profile", action="store_true", help="run cProfile on module")
+    p.add_argument(
+        "--profile", action="store_true", help="run cProfile on module (slower)"
+    )
 
     args = p.parse_args()
     if not ((args.day and args.part) or args.all):
@@ -148,7 +150,6 @@ def main():
             results[-1].append(result.memory / 1024 / 1024)
 
     print()
-
     print(tabulate.tabulate(results, headers=headers, floatfmt=".4f"))
 
 

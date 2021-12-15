@@ -11,3 +11,6 @@ test:
 format:
 	black --target-version py310 .
 
+.PHONY: docker
+docker:
+	docker build -t lolguinan/aoc-py .

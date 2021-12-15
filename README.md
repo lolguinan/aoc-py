@@ -2,6 +2,25 @@
 
 ## aoc-py
 
+### Quickstart: Docker
+
+Install Docker: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+
+Build an image:
+
+```
+docker build -t lolguinan/aoc-py .
+```
+
+Run a container:
+
+```
+docker run --rm -it lolguinan/aoc-py <run.py arguments>
+```
+
+> This passes your arguments directly to the `run.py` script inside the container.
+> See _Usage_ section below for `<run.py arguments>`.
+
 ### Requirements
 
 Requires Python 3.10 so I can finally use match-case for something (though so far it's only an extra level of indentation really).
