@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
+import cProfile
 import collections
 import datetime
 import importlib
 import os
+import pstats
 import re
 import sys
 import time
@@ -44,6 +46,13 @@ def run_module(module_name: str, rounds=1, memory=False) -> RunResult:
     return RunResult(response, stop - start, peak)
 
 
+def profile_module(module_name: str) -> None:
+    mod = importlib.import_module(module_name)
+    with cProfile.Profile() as pr:
+        mod.main(runner=True)
+    pr.print_stats(pstats.SortKey.CUMULATIVE)
+
+
 def parse_args():
     p = argparse.ArgumentParser()
     p.description = "Solution runner."
@@ -76,6 +85,8 @@ def parse_args():
         help="track memory allocations (slower!)",
     )
 
+    p.add_argument("--profile", action="store_true", help="run cProfile on module")
+
     args = p.parse_args()
     if not ((args.day and args.part) or args.all):
         p.print_help()
@@ -106,6 +117,14 @@ def main():
             for day, part in candidates
         ]
         target_modules.update(dict(sorted(candidates)))
+
+    if args.profile:
+        if len(target_modules) > 1:
+            raise Exception("Too many modules to profile.")
+        for year_day_part in target_modules:
+            target_module = target_modules[year_day_part]
+            profile_module(target_module)
+            return
 
     headers = ["MODULE", "RESPONSE", "DURATION"]
     if args.memory:
