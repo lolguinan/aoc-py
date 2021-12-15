@@ -140,7 +140,67 @@ def render_dijkstra(graph: dict[V2, int], path: list[V2]) -> str:
     return os.linesep.join("".join(map(str, row)) for row in output)
 
 
+def render_graph(graph: dict[V2, int]) -> str:
+    (min_x, min_y), (max_x, max_y) = get_corners(graph)
+
+    output = []
+    for y in range(min_y, max_y + 1):
+        output.append([])
+        for x in range(min_x, max_x + 1):
+            output[-1].append(graph.get((x, y), "."))
+
+    return os.linesep.join("".join(map(str, row)) for row in output)
+
+
+def expand_dimensions(graph: dict[V2, int], multiplier: int) -> dict[V2, int]:
+    (min_x, min_y), (max_x, max_y) = get_corners(graph)
+
+    width = max_x - min_x + 1
+    height = max_y - min_y + 1
+
+    expanded = graph.copy()
+
+    # complete first row by expanding right
+    for offset in range(1, multiplier):
+        for x in range(min_x, max_x + 1):
+            for y in range(min_y, max_y + 1):
+                ex = x + offset * width
+                ey = y
+
+                vx = x
+                if offset > 0:
+                    vx = x + (offset - 1) * width
+                vy = y
+
+                v = expanded[(vx, vy)] + 1
+                if v > 9:
+                    v = 1
+                expanded[(ex, ey)] = v
+
+    (min_x, min_y), (max_x, max_y) = get_corners(expanded)
+
+    # complete remaining rows by expanding down
+    for offset in range(1, multiplier):
+        for x in range(min_x, max_x + 1):
+            for y in range(min_y, max_y + 1):
+                ex = x
+                ey = y + offset * width
+
+                vx = x
+                vy = y
+                if offset > 0:
+                    vy = y + (offset - 1) * width
+
+                v = expanded[(vx, vy)] + 1
+                if v > 9:
+                    v = 1
+                expanded[(ex, ey)] = v
+
+    return expanded
+
+
 def solve(data: dict[V2, int]) -> int:
+    data = expand_dimensions(data, 5)
     (min_x, min_y), (max_x, max_y) = get_corners(data)
 
     path = dijkstra(data, (min_x, min_y), (max_x, max_y))
