@@ -55,7 +55,7 @@ def dfs(
         yield ancestors + [node]
 
     if node not in visited or is_small(node):
-        visited.update([node])
+        visited[node] += 1
 
     has_small_twice = visited.total() > len(visited)
 
