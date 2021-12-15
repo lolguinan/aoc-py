@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import heapq
+import itertools
 import math
 import os
 import typing as T
@@ -41,52 +43,51 @@ def get_corners(graph: dict[V2, int]) -> tuple[V2, V2]:
     return (min_x, min_y), (max_x, max_y)
 
 
-class FakeMinPriorityQueue:
+class MinPriorityQueue:
+    # Based on recipe from "Priority Queue Implementation Notes" at:
+    # https://docs.python.org/3/library/heapq.html
+
     def __init__(self):
-        self.heap: dict[int, set[T.Hashable]] = {}
+        self.pq = []
+        self.entry_finder = {}
+        self.REMOVED = "<removed>"
+        self.counter = itertools.count()
 
-    def push(self, priority: int, value: T.Hashable):
-        self.heap.setdefault(priority, set()).add(value)
+    def upsert(self, value: T.Hashable, priority: int) -> None:
+        "Add a new value or update the priority of an existing value."
+        if value in self.entry_finder:
+            self.remove(value)
+        count = next(self.counter)
+        entry = [priority, count, value]
+        self.entry_finder[value] = entry
+        heapq.heappush(self.pq, entry)
 
-    def replace(self, priority: int, value: T.Hashable):
-        keys = self.find(value)
-        if keys is not None:
-            for key in keys:
-                self.heap[key].remove(value)
-        self.push(priority, value)
+    def remove(self, value: T.Hashable) -> None:
+        "Mark an existing value as REMOVED. Raise KeyError if not found."
+        entry = self.entry_finder.pop(value)
+        entry[-1] = self.REMOVED
 
     def pop(self) -> T.Hashable:
-        key = min(self.heap)
-        values = self.heap[key]
-        if len(values) > 1:
-            return values.pop()
-        del self.heap[key]
-        return values.pop()
+        "Remove and return the lowest priority value. Raise KeyError if empty."
+        while self.pq:
+            priority, count, value = heapq.heappop(self.pq)
+            if value is not self.REMOVED:
+                del self.entry_finder[value]
+                return value
+        raise KeyError("Pop from an empty priority queue.")
 
-    def find(self, value) -> list[T.Hashable] | None:
-        keys = []
-        for key in self.heap:
-            if value in self.heap[key]:
-                keys.append(key)
-        if keys:
-            return keys
-        return None
-
-    def contains(self, value) -> bool:
-        return self.find(value) is not None
+    def contains(self, value: T.Hashable) -> bool:
+        return value in self.entry_finder
 
     def empty(self) -> bool:
-        return len(self.heap) == 0
-
-    def sizes(self) -> dict[int, int]:
-        return dict((key, len(self.heap[key])) for key in self.heap)
+        return len(self.pq) == 0
 
 
 def dijkstra(
     graph: dict[V2, int], source: V2, target: V2
 ) -> list[V2] | tuple[dict[V2, int], dict[V2, int]]:
 
-    Q = FakeMinPriorityQueue()
+    Q = MinPriorityQueue()
     dist = {}
     prev = {}
 
@@ -95,7 +96,7 @@ def dijkstra(
         if v != source:
             dist[v] = math.inf
             prev[v] = None
-        Q.push(dist[v], v)
+        Q.upsert(v, dist[v])
 
     while not Q.empty():
         u = Q.pop()
@@ -117,7 +118,7 @@ def dijkstra(
             if alt < dist[v]:
                 dist[v] = alt
                 prev[v] = u
-                Q.replace(alt, v)
+                Q.upsert(v, alt)
 
     return dist, prev
 
