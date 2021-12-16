@@ -128,7 +128,7 @@ def main():
             profile_module(target_module)
             return
 
-    headers = ["MODULE", "RESPONSE", "DURATION"]
+    headers = ["MODULE", "RESPONSE", "TIME (s)"]
     if args.memory:
         headers.append("MEM (MiB)")
 
