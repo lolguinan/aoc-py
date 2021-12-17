@@ -13,40 +13,26 @@ class Vector2:
 
 
 @dataclasses.dataclass
-class Bounds:
+class Target:
     lower: Vector2
     upper: Vector2
 
 
-def parse_input(content: str) -> Bounds:
+def parse_input(content: str) -> Target:
     match = re.findall(r"([-]?\d+)", content)
     x0, x1, y0, y1 = map(int, match)
     if x1 < x0:
         x0, x1 = x1, x0
     if y1 < y0:
         y0, y1 = y1, y0
-    return Bounds(Vector2(x0, y0), Vector2(x1, y1))
+    return Target(Vector2(x0, y0), Vector2(x1, y1))
 
 
-def within_area(b: Bounds, p: Vector2) -> bool:
-    return b.lower.x <= p.x <= b.upper.x and b.lower.y <= p.y <= b.upper.y
-
-
-def overshot(b: Bounds, p: Vector2) -> bool:
-    return p.x > b.upper.x or p.y < b.lower.y
-
-
-def step_position(p: Vector2, v: Vector2) -> tuple[Vector2, Vector2]:
-    p2 = Vector2(p.x + v.x, p.y + v.y)
-    v2 = Vector2(v.x - 1 if v.x > 0 else v.x + 1 if v.x < 0 else v.x, v.y - 1)
-    return p2, v2
-
-
-def render(b: Bounds, steps: list[Vector2]) -> str:
+def render(t: Target, steps: list[Vector2]) -> str:
     poi = {}
-    for bx in range(b.lower.x, b.upper.x + 1):
-        for by in range(b.lower.y, b.upper.y + 1):
-            poi[(bx, by)] = "T"
+    for tx in range(t.lower.x, t.upper.x + 1):
+        for ty in range(t.lower.y, t.upper.y + 1):
+            poi[(tx, ty)] = "T"
     origin = Vector2(0, 0)
     for step in steps:
         poi[dataclasses.astuple(step)] = "S" if step == origin else "#"
@@ -65,39 +51,37 @@ def render(b: Bounds, steps: list[Vector2]) -> str:
     return os.linesep.join("".join(row) for row in reversed(grid))
 
 
-def launch_probe(bounds: tuple[Vector2, Vector2], velocity: Vector2):
+def within_area(t: Target, p: Vector2) -> bool:
+    return t.lower.x <= p.x <= t.upper.x and t.lower.y <= p.y <= t.upper.y
+
+
+def overshot(t: Target, p: Vector2) -> bool:
+    return p.x > t.upper.x or p.y < t.lower.y
+
+
+def step_position(p: Vector2, v: Vector2) -> tuple[Vector2, Vector2]:
+    p2 = Vector2(p.x + v.x, p.y + v.y)
+    v2 = Vector2(v.x - 1 if v.x > 0 else v.x + 1 if v.x < 0 else v.x, v.y - 1)
+    return p2, v2
+
+
+def launch_probe(target: Target, velocity: Vector2) -> tuple[bool, list[Vector2]]:
     position = Vector2(0, 0)
     steps = [position]
     while True:
         position, velocity = step_position(position, velocity)
         steps.append(position)
-        if within_area(bounds, position):
+        if within_area(target, position):
             return True, steps
-        if overshot(bounds, position):
+        if overshot(target, position):
             return False, steps
 
 
-def nat_sum_to(n):
-    return (n * (n + 1)) / 2
-
-
-def solve(data: Bounds) -> int:
-    try_up_to = 1_000
-
-    x_candidates = []
-    for x in range(try_up_to + 1):
-        nat_sum = nat_sum_to(x)
-        if nat_sum < data.lower.x:
-            continue
-        if nat_sum > data.upper.x:
-            break
-        x_candidates.append(x)
-
-    try_up_to = abs(data.lower.y)
-
+def solve(data: Target) -> int:
     max_y = -math.inf
-    for x in x_candidates:
-        for y in range(-try_up_to, try_up_to + 1):
+
+    for x in range(data.upper.x + 1):
+        for y in range(-abs(data.lower.y), abs(data.lower.y) + 1):
             hit, steps = launch_probe(data, Vector2(x, y))
             if hit:
                 max_y = max(max_y, max(step.y for step in steps))
