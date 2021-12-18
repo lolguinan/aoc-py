@@ -69,7 +69,7 @@ def solve(line_segments: list[list[int]]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/005.txt") as fp:
+    with open("inputs/year2021/005.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

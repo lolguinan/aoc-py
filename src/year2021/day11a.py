@@ -94,7 +94,7 @@ def solve(data: list[list[int]], steps: int) -> int:
 
 
 def main(runner=False):
-    with open("inputs/011.txt") as fp:
+    with open("inputs/year2021/011.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

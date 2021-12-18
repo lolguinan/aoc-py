@@ -33,7 +33,7 @@ def solve(initial_state: list[int], days: int) -> int:
 
 
 def main(runner=False):
-    with open("inputs/006.txt") as fp:
+    with open("inputs/year2021/006.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

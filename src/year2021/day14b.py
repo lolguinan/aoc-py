@@ -65,7 +65,7 @@ def solve(data: ParsedInput, max_steps: int) -> int:
 
 
 def main(runner=False):
-    with open("inputs/014.txt") as fp:
+    with open("inputs/year2021/014.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

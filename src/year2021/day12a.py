@@ -52,7 +52,7 @@ def solve(graph: dict[str, list[str]]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/012.txt") as fp:
+    with open("inputs/year2021/012.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

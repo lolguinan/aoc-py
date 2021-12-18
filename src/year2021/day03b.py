@@ -55,7 +55,7 @@ def solve(data: list[list[int]]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/003.txt") as fp:
+    with open("inputs/year2021/003.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

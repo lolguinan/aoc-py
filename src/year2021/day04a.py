@@ -68,7 +68,7 @@ def solve(boards: list[list[int]], numbers_to_call: list[int]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/004.txt") as fp:
+    with open("inputs/year2021/004.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

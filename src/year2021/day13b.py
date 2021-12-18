@@ -71,7 +71,7 @@ def solve(data: ParsedInput, max_folds=math.inf) -> str:
 
 
 def main(runner=False):
-    with open("inputs/013.txt") as fp:
+    with open("inputs/year2021/013.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

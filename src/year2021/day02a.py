@@ -31,7 +31,7 @@ def execute_plan(commands: list[tuple[str, int]]) -> tuple[int, int]:
 
 
 def main(runner=False):
-    with open("inputs/002.txt") as fp:
+    with open("inputs/year2021/002.txt") as fp:
         content = fp.read()
 
     commands = parse_input(content)

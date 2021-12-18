@@ -209,7 +209,7 @@ def solve(data: list[Pair]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/018.txt") as fp:
+    with open("inputs/year2021/018.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

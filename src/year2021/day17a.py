@@ -90,7 +90,7 @@ def solve(data: Target) -> int:
 
 
 def main(runner=False):
-    with open("inputs/017.txt") as fp:
+    with open("inputs/year2021/017.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

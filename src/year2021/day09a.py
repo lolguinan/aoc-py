@@ -43,7 +43,7 @@ def solve(data: dict[tuple[int, int], int]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/009.txt") as fp:
+    with open("inputs/year2021/009.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

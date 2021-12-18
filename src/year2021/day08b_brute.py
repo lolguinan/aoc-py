@@ -85,7 +85,7 @@ def solve(data: list[tuple[list[str], list[str]]]) -> int:
 
 
 def main(runner=False):
-    with open("inputs/008.txt") as fp:
+    with open("inputs/year2021/008.txt") as fp:
         content = fp.read()
 
     data = parse_input(content)

@@ -15,7 +15,7 @@ def resolve_paths(year: int, day: int) -> dict:
 
     day = f"{day:02}"
     src = os.path.join(START_IN, "..", "src", f"year{year}")
-    tests = os.path.join(START_IN, "..", "tests")
+    tests = os.path.join(START_IN, "..", "tests", f"year{year}")
     return {
         "src": {
             "a": make_rel_path(os.path.join(src, f"day{day}a.py")),
@@ -33,12 +33,14 @@ def check_paths(paths: dict):
     for kind in paths:
         for part in paths[kind]:
             filepath = paths[kind][part]
-            if kind == "a":
+            if part == "a":
                 if not os.path.exists(filepath):
                     errors.append(f"Source does not exist: {filepath}")
-            elif kind == "b":
+            elif part == "b":
                 if os.path.exists(filepath):
                     errors.append(f"Destination already exists: {filepath}")
+            else:
+                raise Exception(f"Unknown path part: {part}")
     return errors
 
 
