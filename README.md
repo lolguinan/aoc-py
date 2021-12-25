@@ -1,5 +1,15 @@
 # Advent of Code
 
+## Status
+
+```
+         1111111111222222
+1234567890123456789012345
+gggggggggggggggggg  ss  s
+```
+
+> `g` => _gold_ (two stars), `s` => _silver_ (one star)
+
 ## aoc-py
 
 ### Quickstart: Docker
