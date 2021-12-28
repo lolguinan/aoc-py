@@ -59,7 +59,7 @@ def movement_target(
         case Mobile.SOUTH:
             return Vector2(position.x, (position.y + 1) % height)
         case _:
-            raise Exception(f'Unknown mobile: {mobile}')
+            raise Exception(f"Unknown mobile: {mobile}")
 
 
 def step_move(state: State, mobile_type: Mobile = None) -> State:

@@ -3,9 +3,9 @@
 ## Status
 
 ```
-         1111111111222222
-1234567890123456789012345
-gggggggggggggggggg  ss  s
+               1111111111222222
+      1234567890123456789012345
+2021  gggggggggggggggggg  ss gs
 ```
 
 > `g` => _gold_ (two stars), `s` => _silver_ (one star)
