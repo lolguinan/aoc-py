@@ -2,3 +2,4 @@ colorama==0.4.4
 tabulate==0.8.9
 tqdm==4.62.3
 sympy==1.9
+numpy==1.21.4
