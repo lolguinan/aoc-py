@@ -9,6 +9,7 @@ import os
 import pstats
 import re
 import sys
+import tempfile
 import time
 import tracemalloc
 
@@ -50,6 +51,7 @@ def profile_module(module_name: str) -> None:
     mod = importlib.import_module(module_name)
     with cProfile.Profile() as pr:
         mod.main(runner=True)
+    pr.dump_stats(os.path.join(tempfile.gettempdir(), f"{module_name}.prof"))
     pr.print_stats(pstats.SortKey.CUMULATIVE)
 
 

@@ -5,7 +5,7 @@
 ```
                1111111111222222
       1234567890123456789012345
-2021  ggggggggggggggggggg ss gs
+2021  ggggggggggggggggggg sg gs
 ```
 
 > `g` => _gold_ (two stars), `s` => _silver_ (one star)
