@@ -52,15 +52,17 @@ def points_in_region(lower: Vector3, upper: Vector3) -> T.Iterator[Vector3]:
     lower_bound = Vector3(-50, -50, -50)
     upper_bound = Vector3(50, 50, 50)
 
-    for x in range(lower.x, upper.x + 1):
-        if not lower_bound.x <= x <= upper_bound.x:
-            continue
-        for y in range(lower.y, upper.y + 1):
-            if not lower_bound.y <= y <= upper_bound.y:
-                continue
-            for z in range(lower.z, upper.z + 1):
-                if not lower_bound.z <= z <= upper_bound.z:
-                    continue
+    min_x = max(lower_bound.x, lower.x)
+    min_y = max(lower_bound.y, lower.y)
+    min_z = max(lower_bound.z, lower.z)
+
+    max_x = min(upper_bound.x, upper.x)
+    max_y = min(upper_bound.y, upper.y)
+    max_z = min(upper_bound.z, upper.z)
+
+    for x in range(min_x, max_x + 1):
+        for y in range(min_y, max_y + 1):
+            for z in range(min_z, max_z + 1):
                 yield Vector3(x, y, z)
 
 
